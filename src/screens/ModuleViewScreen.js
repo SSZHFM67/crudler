@@ -1,14 +1,26 @@
 import { StyleSheet, Text } from 'react-native';
 import React from 'react';
+import { Alert } from 'react-native';
 import Screen from './layout/Screen';
 import ModuleView from './components/entity/modules/ModuleView';
 
-const ModuleViewScreen = ({ route }) => {
+const ModuleViewScreen = ({ route, navigation }) => {
    const { module } = route.params;
+   const handleModify = () => {
+    Alert.alert('Modify', `Modify ${module.ModuleCode}`);
+   };
+
+   const handleDelete = () => {
+    Alert.alert('Delete', `Delete ${module.ModuleCode}`);
+   };
 
   return (
     <Screen>
-      <ModuleView module={module} />
+      <ModuleView
+      module={module}
+      onModify={handleModify}
+      onDelete={handleDelete}
+      />
     </Screen>
   );
 };

@@ -1,7 +1,13 @@
 import React from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Button, ButtonTray } from '../../UI/Button';
 
-const ModuleView = ({ module }) => {
+const ModuleView = ({
+  module,
+  onModify = () => {},
+  onDelete = () => {},
+}) => {
+  
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {/* Full-width image */}
@@ -26,6 +32,12 @@ const ModuleView = ({ module }) => {
           <Text style={styles.metaLabel}>ID:</Text>
           <Text style={styles.metaValue}>{module.ModuleID}</Text>
         </View>
+     
+     {/* Button tray */}
+        <ButtonTray>
+          <Button label="Modify" onPress={onModify} />
+          <Button label="Delete" onPress={onDelete} />
+        </ButtonTray>
       </View>
     </ScrollView>
   );
