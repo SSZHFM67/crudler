@@ -1,5 +1,5 @@
 import { StyleSheet, Text } from 'react-native';
-import Screen from './layout/Screen';
+import Screen from './Screen';
 
 const ModuleModifyScreen = () => {
   return (
@@ -13,6 +13,8 @@ const styles = StyleSheet.create({
   text: {
     color: '#fff',
     fontSize: 24,
+    textAlign: 'center',
+    marginTop: 40,
   },
 });
 

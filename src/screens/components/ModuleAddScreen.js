@@ -1,10 +1,10 @@
 import { StyleSheet, Text } from 'react-native';
-import Screen from './layout/Screen';
+import Screen from './Screen';
 
-const ModuleViewScreen = () => {
+const ModuleAddScreen = () => {
   return (
     <Screen>
-      <Text style={styles.text}>View</Text>
+      <Text style={styles.text}>Add</Text>
     </Screen>
   );
 };
@@ -18,4 +18,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ModuleViewScreen;
+export default ModuleAddScreen;

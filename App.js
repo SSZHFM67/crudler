@@ -2,10 +2,10 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import ModuleListScreen from './src/screens/ModuleListScreen';
-import ModuleAddScreen from './src/screens/ModuleAddScreen';
-import ModuleViewScreen from './src/screens/ModuleViewScreen';
-import ModuleModifyScreen from './src/screens/ModuleModifyScreen';
+import ModuleListScreen from './src/screens/components/ModuleListScreen';
+import ModuleAddScreen from './src/screens/components/ModuleAddScreen';
+import ModuleViewScreen from './src/screens/components/ModuleViewScreen';
+import ModuleModifyScreen from './src/screens/components/ModuleModifyScreen';
 
 const Stack = createNativeStackNavigator();
 
