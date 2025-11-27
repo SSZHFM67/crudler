@@ -30,3 +30,44 @@ const ModuleView = ({ module }) => {
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    paddingBottom: 24,
+  },
+  image: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'cover',
+  },
+  infoTray: {
+    paddingHorizontal: 16,
+    paddingVertical: 20,
+  },
+  code: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#fff',
+    marginBottom: 4,
+  },
+  name: {
+    fontSize: 18,
+    color: '#ccc',
+    marginBottom: 16,
+  },
+  metaRow: {
+    flexDirection: 'row',
+    marginBottom: 6,
+  },
+  metaLabel: {
+    fontSize: 14,
+    color: '#888',
+    marginRight: 8,
+  },
+  metaValue: {
+    fontSize: 14,
+    color: '#fff',
+  },
+});
+
+export default ModuleView;
