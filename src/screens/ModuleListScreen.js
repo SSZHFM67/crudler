@@ -5,9 +5,9 @@ import initialModules from '../data/modules';
 import Screen from './layout/Screen';
 import initialModules from './data/modules';
 import ModuleList from './components/entity/modules/ModuleList';
-import { Alert } from 'react-native';
+//import { Alert } from 'react-native';
 
-const ModuleListScreen = () => {
+const ModuleListScreen = ({ navigation }) => {
   // Initialisations 
   const modules = initialModules;
 
@@ -16,12 +16,14 @@ const ModuleListScreen = () => {
 
   // Handlers 
   const handleSelect = (module) => {
-    // test
-    alert(`${module.ModuleCode} - ${module.ModuleName}`);
+    navigation.navigate('ModuleView', { module });
   };
+    
+    // test
+    //alert(`${module.ModuleCode} - ${module.ModuleName}`);
 
   // View 
-  return (
+  /*return (
     <Screen>
       <ScrollView contentContainerStyle={styles.listContainer}>
         {modules.map((module) => (
@@ -59,6 +61,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: 2,
   },
-});
+});*/
+
+ return (
+    <Screen>
+      <ModuleList modules={modules} onSelect={handleSelect} />
+    </Screen>
+  );
+};
 
 export default ModuleListScreen;
