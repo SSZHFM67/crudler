@@ -15,3 +15,35 @@ const Button = ({ label, onPress }) => {
     </Pressable>
   );
 };
+
+//reusable ButtonTray side by side 
+
+const ButtonTray = ({ children }) => {
+  return <View style={styles.tray}>{children}</View>;
+};
+
+const styles = StyleSheet.create({
+  tray: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 12,
+    marginTop: 16,
+    paddingHorizontal: 16,
+  },
+  button: {
+    flex: 1,
+    paddingVertical: 10,
+    borderRadius: 6,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+  },
+  buttonPressed: {
+    opacity: 0.7,
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#000',
+  },
+});
+export { Button, ButtonTray };
