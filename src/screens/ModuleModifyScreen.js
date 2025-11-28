@@ -3,6 +3,10 @@ import React, { useState } from 'react';
 import {
   ScrollView,
   StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import Screen from './layout/Screen';
 import { Button, ButtonTray } from './components/UI/Button';
 
@@ -29,6 +33,13 @@ const [editedModule, setEditedModule] = useState(module);
 
   return (
     <Screen>
+      <ScrollView contentContainerStyle={styles.container}>
+        {/* Code */}
+        <View style={styles.formItem}>
+          <Text style={styles.label}>Code</Text>
+          <TextInput
+            style={styles.input}
+            value={editedModule.ModuleCode ?? ''}
             onChangeText={(text) => handleChange('ModuleCode', text)}
             placeholder="e.g. CI6330"
             placeholderTextColor="#777"
