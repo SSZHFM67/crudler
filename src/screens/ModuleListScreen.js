@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Screen from './layout/Screen';
 import initialModules from './data/modules';
 import ModuleList from './components/entity/modules/ModuleList';
+import { Button, ButtonTray } from './components/UI/Button';
 
 //no navigation warning about function
 //LogBox.ignoreLogs([
@@ -17,9 +18,9 @@ const ModuleListScreen = ({ navigation }) => {
   // (none yet)
 
   // Handlers 
-  const handleDelete = (moduleToDelete) => {
+  const handleDelete = (module) => {
     setModules((current) =>
-      current.filter((m) => m.ModuleID !== moduleToDelete.ModuleID)
+      current.filter((m) => m.ModuleID !== module.ModuleID)
     );
   };
 
@@ -27,6 +28,20 @@ const ModuleListScreen = ({ navigation }) => {
     handleDelete(module);
     navigation.goBack();
   };
+
+  const handleAdd = (module) => {
+    setModules((current) => [...current, module]);
+  };
+
+  const onAdd = (module) => {
+    handleAdd(module);
+    navigation.goBack();
+  };
+
+  const gotoAddScreen = () => {
+    navigation.navigate('ModuleAdd', { onAdd });
+  };
+
 
    const gotoViewScreen = (module) => {
     navigation.navigate('ModuleView', { module, onDelete });
