@@ -18,9 +18,9 @@ const ModuleListScreen = ({ navigation }) => {
   // (none yet)
 
   // Handlers 
-  const handleDelete = (module) => {
+   const handleDelete = (moduleToDelete) => {
     setModules((current) =>
-      current.filter((m) => m.ModuleID !== module.ModuleID)
+      current.filter((m) => m.ModuleID !== moduleToDelete.ModuleID)
     );
   };
 
@@ -42,6 +42,17 @@ const ModuleListScreen = ({ navigation }) => {
     navigation.navigate('ModuleAdd', { onAdd });
   };
 
+  const handleUpdate = (updatedModule) => {
+    setModules((current) =>
+      current.map((m) =>
+        m.ModuleID === updatedModule.ModuleID ? updatedModule : m
+      )
+    );
+  };
+
+  const onUpdate = (updatedModule) => {
+    handleUpdate(updatedModule);
+  };
 
    const gotoViewScreen = (module) => {
     navigation.navigate('ModuleView', { module, onDelete });
@@ -94,8 +105,13 @@ const styles = StyleSheet.create({
 
 return (
     <Screen>
+      <ButtonTray>
+        <Button label="Add" onPress={gotoAddScreen} />
+      </ButtonTray>
+
       <ModuleList modules={modules} onSelect={gotoViewScreen} />
     </Screen>
   );
 };
+
 export default ModuleListScreen;
