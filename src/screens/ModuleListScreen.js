@@ -1,18 +1,13 @@
 import { ScrollView, Pressable, StyleSheet, Text, View } from 'react-native';
-/*import Screen from './Screen';
-import initialModules from '../data/modules';
-*/
 import React, { useState } from 'react';
-import { LogBox } from 'react-native';
 import Screen from './layout/Screen';
 import initialModules from './data/modules';
 import ModuleList from './components/entity/modules/ModuleList';
-//import { Alert } from 'react-native';
 
 //no navigation warning about function
-LogBox.ignoreLogs([
-  'Non-serializable values were found in the navigation state',
-]);
+//LogBox.ignoreLogs([
+ // 'Non-serializable values were found in the navigation state',
+//]);
 
 const ModuleListScreen = ({ navigation }) => {
   // Initialisations 

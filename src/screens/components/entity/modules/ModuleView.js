@@ -49,10 +49,10 @@ const ModuleView = ({
           <Text style={styles.metaValue}>{module.ModuleID}</Text>
         </View>
      
-     {/* Button tray */}
+      {/* Button tray – side-by-side buttons */}
         <ButtonTray>
-          <Button label="Modify" onPress={onModify} />
-          <Button label="Delete" onPress={onDelete} />
+          <Button label="Modify" onPress={() => onModify(module)} />
+          <Button label="Delete" onPress={requestDelete} />
         </ButtonTray>
       </View>
     </ScrollView>

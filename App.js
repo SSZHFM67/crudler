@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { LogBox } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -6,6 +7,10 @@ import ModuleListScreen from './src/screens/ModuleListScreen';
 import ModuleAddScreen from './src/screens/ModuleAddScreen';
 import ModuleViewScreen from './src/screens/ModuleViewScreen';
 import ModuleModifyScreen from './src/screens/ModuleModifyScreen';
+
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
 
 const Stack = createNativeStackNavigator();
 
