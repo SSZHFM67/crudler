@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Button, ButtonTray } from '../../UI/Button';
 
 const ModuleView = ({
@@ -7,7 +7,23 @@ const ModuleView = ({
   onModify = () => {},
   onDelete = () => {},
 }) => {
-  
+  //confirm delete
+   const requestDelete = () => {
+    Alert.alert(
+      'Delete module',
+      `Are you sure you want to delete ${module.ModuleCode}?`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => onDelete(module),
+        },
+      ]
+    );
+  };
+
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {/* Full-width image */}

@@ -4,22 +4,23 @@ import { Alert } from 'react-native';
 import Screen from './layout/Screen';
 import ModuleView from './components/entity/modules/ModuleView';
 
-const ModuleViewScreen = ({ route, navigation }) => {
-   const { module } = route.params;
+const ModuleViewScreen = ({ route }) => {
+   const { module, onDelete } = route.params;
+   
    const handleModify = () => {
     Alert.alert('Modify', `Modify ${module.ModuleCode}`);
    };
 
-   const handleDelete = () => {
-    Alert.alert('Delete', `Delete ${module.ModuleCode}`);
-   };
+ //  const handleDelete = () => {
+  //  Alert.alert('Delete', `Delete ${module.ModuleCode}`);
+  // };
 
   return (
     <Screen>
       <ModuleView
       module={module}
       onModify={handleModify}
-      onDelete={handleDelete}
+      onDelete={onDelete}
       />
     </Screen>
   );
