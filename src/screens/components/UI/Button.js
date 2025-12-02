@@ -54,3 +54,4 @@ const styles = StyleSheet.create({
 });
 
 export { Button, ButtonTray };
+export default Button;

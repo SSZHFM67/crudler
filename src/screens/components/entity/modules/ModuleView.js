@@ -27,7 +27,7 @@ const ModuleView = ({
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {/* Full-width image */}
-      <Image source={{ uri: module.ModuleImage }} style={styles.image} />
+      <Image source={{ uri: module.ModuleImageURL }} style={styles.image} />
 
       {/* Info tray */}
       <View style={styles.infoTray}>

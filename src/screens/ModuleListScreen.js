@@ -1,17 +1,18 @@
-import { ScrollView, Pressable, StyleSheet, Text, View } from 'react-native';
+//import { ScrollView, Pressable, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { LogBox, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 
 import Screen from './layout/Screen';
-//import initialModules from './data/modules';
-import Button from './components/UI/Button';
+import ModuleList from './components/entity/modules/ModuleList'; 
+import { Button, ButtonTray } from './components/UI/Button';
 import Icons from './components/UI/Icons';
 import API from './components/API/API';
-import ModuleList from './components/entity/modules/ModuleList';
+
+
 //import { Button, ButtonTray } from './components/UI/Button';
 
 //warning about function
-LogBox.ignoreLogs(['Non-serializable values were found in the navigation state']);
+//LogBox.ignoreLogs(['Non-serializable values were found in the navigation state']);
 
 const modulesEndpoint = '/modules';
 
@@ -88,23 +89,34 @@ const ModuleListScreen = ({ navigation }) => {
   };
 
   //loadin API
-  const loadModules = async (endpoint) => {
+  const loadModules = async () => {
     setIsLoading(true);
 
-    const response = await API.get(endpoint);
-
-    setIsLoading(false);
+    const response = await API.get(modulesEndpoint);
 
     if (response.isSuccess) {
-      setModules(response.result);
+      // Map API fields to the shape our components expect
+      const apiModules = response.result.map((m) => ({
+        ModuleID: m.ModuleID,
+        ModuleCode: m.ModuleCode,
+        ModuleName: m.ModuleName,
+        ModuleLevel: m.ModuleLevel,
+        ModuleLeaderID: m.ModuleLeaderID,
+        ModuleLeaderName: m.ModuleLeaderName,
+        // API uses ModuleImageURL; ModuleView expects ModuleImageURL too
+        ModuleImageURL: m.ModuleImageURL,
+      }));
+
+      setModules(apiModules);
     } else {
       console.log('Error loading modules:', response.status);
     }
+    setIsLoading(false);
   };
 
   //run if screen mount 
   useEffect(() => {
-    loadModules(modulesEndpoint);
+    loadModules();
   }, []);
 
     // test
@@ -167,16 +179,15 @@ export default ModuleListScreen;*/
 
  return (
     <Screen>
-      <View style={styles.actionsRow}>
-        <Button
-          icon={Icons.add}
-          title="Add"
-          onClick={gotoAddScreen}
-        />
-      </View>
+      <ButtonTray>
+        <Button label="Add" onPress={gotoAddScreen} />
+      </ButtonTray>
 
       {isLoading && (
-        <Text style={styles.loadingText}>Loading records...</Text>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="small" color="#ffffff" />
+          <Text style={styles.loadingText}>Loading records...</Text>
+        </View>
       )}
 
       <ModuleList modules={modules} onSelect={gotoViewScreen} />
@@ -185,14 +196,15 @@ export default ModuleListScreen;*/
 };
 
 const styles = StyleSheet.create({
-  actionsRow: {
-    paddingHorizontal: 16,
+  loadingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingVertical: 8,
   },
   loadingText: {
-    color: '#fff',
-    textAlign: 'center',
-    marginTop: 16,
+    color: '#ffffff',
+    marginLeft: 8,
   },
 });
 
