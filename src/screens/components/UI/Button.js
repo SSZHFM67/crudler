@@ -1,57 +1,51 @@
 import React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
+import Selector from './Selector';
 
 //reusable button 
-const Button = ({ label, onPress }) => {
-  return (
-    <Pressable
+const Button = ({ title, children, onPress, style }) => {
+  const label = children || title;
+
+ return (
+    <Selector
       onPress={onPress}
-      style={({ pressed }) => [
-        styles.button,
-        pressed && styles.buttonPressed,
-      ]}
+      style={[styles.button, style]}
+      pressedStyle={styles.pressedButton}
+      // use normal tap for buttons
+      useLongPress={false}
     >
-      <View style={styles.content}>
-        <Text style={styles.label}>{label}</Text>
-      </View>
-    </Pressable>
+      <Text style={styles.text}>{label}</Text>
+    </Selector>
   );
 };
 //reusable ButtonTray side by side 
 
-const ButtonTray = ({ children }) => {
-  return <View style={styles.tray}>{children}</View>;
-};
+//const ButtonTray = ({ children }) => {
+//  return <View style={styles.tray}>{children}</View>;
+//};
 
 const styles = StyleSheet.create({
   button: {
     backgroundColor: '#ffffff',
-    borderRadius: 4,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    alignSelf: 'flex-start',
-  },
-  buttonPressed: {
-    opacity: 0.7,
-  },
-  content: {
-    flexDirection: 'row',
+    borderRadius: 6,
     alignItems: 'center',
     justifyContent: 'center',
+    alignSelf: 'flex-start',
   },
-  label: {
-    color: '#000000',
-    fontWeight: 'bold',
+  pressedButton: {
+    backgroundColor: 'azure',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
   },
-  tray: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    paddingHorizontal: 16,
-    marginTop: 12,
-    marginBottom: 12,
-    gap: 12,
+  text: {
+    color: '#000',
+    fontWeight: '500',
   },
 });
 
-export { Button, ButtonTray };
 export default Button;
