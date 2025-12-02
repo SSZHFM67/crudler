@@ -1,15 +1,30 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import Selector from '../../UI/Selector';
 
-const ModuleItem = ({ module, onSelect }) => {
-  const handlePress = () => {
-    onSelect(module);
-  };
+const ModuleItem = ({ module, onPress }) => {
+  //const handlePress = () => {
+    //onSelect(module);
+  //};
 
   return (
-    <Pressable style={styles.item} onPress={handlePress}>
+    <Selector
+      onPress={onPress}
+      style={styles.item}
+      pressedStyle={styles.pressedItem}
+      //long press to avoid accidents
+      useLongPress={true}
+    >
+      <View>
+        <Text style={styles.code}>{module.ModuleCode}</Text>
+        <Text style={styles.name}>{module.ModuleName}</Text>
+      </View>
+    </Selector>
+
+    /*<Pressable style={styles.item} onPress={handlePress}>
       <Text style={styles.code}>{module.ModuleCode}</Text>
       <Text style={styles.name}>{module.ModuleName}</Text>
-    </Pressable>
+    </Pressable>*/
   );
 };
 
@@ -19,6 +34,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#333',
+   },
+  pressedItem: {
+    backgroundColor: 'azure',
   },
   code: {
     color: '#fff',
