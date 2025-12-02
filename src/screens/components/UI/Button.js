@@ -1,10 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Selector from './Selector';
 
 //reusable button 
-const Button = ({ title, children, onPress, style }) => {
-  const label = children || title;
+const Button = ({ label, title, children, onPress, style }) => {
+  const text = label || title || children;
 
  return (
     <Selector
@@ -14,15 +14,15 @@ const Button = ({ title, children, onPress, style }) => {
       // use normal tap for buttons
       useLongPress={false}
     >
-      <Text style={styles.text}>{label}</Text>
+      <Text style={styles.text}>{text}</Text>
     </Selector>
   );
 };
 //reusable ButtonTray side by side 
 
-//const ButtonTray = ({ children }) => {
-//  return <View style={styles.tray}>{children}</View>;
-//};
+const ButtonTray = ({ children }) => {
+  return <View style={styles.tray}>{children}</View>;
+};
 
 const styles = StyleSheet.create({
   button: {
@@ -48,4 +48,5 @@ const styles = StyleSheet.create({
   },
 });
 
+export { Button, ButtonTray };
 export default Button;
