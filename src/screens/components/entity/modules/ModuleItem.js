@@ -2,18 +2,18 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Selector from '../../UI/Selector';
 
-const ModuleItem = ({ module, onPress }) => {
+const ModuleItem = ({ module, onSelect  }) => {
   //const handlePress = () => {
     //onSelect(module);
   //};
 
   return (
     <Selector
-      onPress={onPress}
+      onPress={() => onSelect(module)}
       style={styles.item}
       pressedStyle={styles.pressedItem}
       //long press to avoid accidents
-      useLongPress={true}
+      useLongPress={false}
     >
       <View>
         <Text style={styles.code}>{module.ModuleCode}</Text>
