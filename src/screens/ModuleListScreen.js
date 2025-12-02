@@ -5,8 +5,9 @@ import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import Screen from './layout/Screen';
 import ModuleList from './components/entity/modules/ModuleList'; 
 import { Button, ButtonTray } from './components/UI/Button';
-import Icons from './components/UI/Icons';
-import API from './components/API/API';
+import useLoad from './components/API/useLoad';
+//import Icons from './components/UI/Icons';
+//import API from './components/API/API';
 
 
 //import { Button, ButtonTray } from './components/UI/Button';
@@ -17,9 +18,27 @@ import API from './components/API/API';
 const modulesEndpoint = '/modules';
 
 const ModuleListScreen = ({ navigation }) => {
+  //api hook data loading
+  const { records, isLoading } = useLoad(modulesEndpoint);
   //State 
-  const [modules, setModules] = useState([]);   
-  const [isLoading, setIsLoading] = useState(true);
+
+ const [modules, setModules] = useState([]);   
+ // const [isLoading, setIsLoading] = useState(true);
+
+ //load api changes 
+  useEffect(() => {
+    const mapped = records.map((m) => ({
+      ModuleID: m.ModuleID,
+      ModuleCode: m.ModuleCode,
+      ModuleName: m.ModuleName,
+      ModuleLevel: m.ModuleLevel,
+      ModuleLeaderID: m.ModuleLeaderID,
+      ModuleLeaderName: m.ModuleLeaderName,
+      ModuleImageURL: m.ModuleImageURL,
+    }));
+    setModules(mapped);
+  }, [records]);
+
 
   //CRUDL handlers
   const handleDelete = (moduleToDelete) => {
@@ -28,16 +47,24 @@ const ModuleListScreen = ({ navigation }) => {
     );
   };
 
-  const handleModify = (modifiedModule) => {
+ /* const handleModify = (modifiedModule) => {
     setModules((current) =>
       current.map((m) =>
         m.ModuleID === modifiedModule.ModuleID ? modifiedModule : m
       )
     );
-  };
+  }; */
 
   const handleAdd = (newmodule) => {
     setModules((current) => [...current, module]);
+  };
+
+  const handleUpdate = (updatedModule) => {
+    setModules((current) =>
+      current.map((m) =>
+        m.ModuleID === updatedModule.ModuleID ? updatedModule : m
+      )
+    );
   };
 
   const onDelete = (module) => {
@@ -45,16 +72,21 @@ const ModuleListScreen = ({ navigation }) => {
     navigation.goBack();
   };
 
-  const onModify = (module) => {
+ /* const onModify = (module) => {
     handleModify(module);
     navigation.goBack();
-  };
+  }; */
 
   const onAdd = (module) => {
     handleAdd(module);
     navigation.goBack();
   };
 
+  const onUpdate = (updatedModule) => {
+    handleUpdate(updatedModule);
+  };
+
+ 
   /*const onAdd = (module) => {
     handleAdd(module);
     navigation.goBack();
@@ -80,7 +112,7 @@ const ModuleListScreen = ({ navigation }) => {
     navigation.navigate('ModuleView', {
       module,
       onDelete,
-      onModify,
+      onUpdate,
     });
   };
 
@@ -89,7 +121,7 @@ const ModuleListScreen = ({ navigation }) => {
   };
 
   //loadin API
-  const loadModules = async () => {
+  /*const loadModules = async () => {
     setIsLoading(true);
 
     const response = await API.get(modulesEndpoint);
