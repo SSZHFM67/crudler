@@ -1,52 +1,56 @@
 // src/screens/components/API/API.js
-
+//fix JSON eroor not updating the page changes
 const BASE_URL = 'https://softwarehub.uk/unibase/api';
 
-async function request(endpoint, method = 'GET', data = null) {
-  const url = `${BASE_URL}/${endpoint}`;
+const handleResponse = async (response) => {
+  const text = await response.text();
+  let data = null;
 
-  const options = {
-    method,
-  };
-
-  if (data !== null) {
-    options.headers = {
-      'Content-Type': 'application/json',
-    };
-    options.body = JSON.stringify(data);
+  if (text) {
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      data = null;
+    }
   }
 
-  try {
-    const response = await fetch(url, options);
-    const result = await response.json();
+  const isSuccess = response.ok;
+  const message =
+    data?.message ||
+    (!isSuccess ? `HTTP ${response.status} ${response.statusText}` : null);
 
-    return {
-      isSuccess: response.ok,
-      result,
-      status: response.status,
-    };
-  } catch (error) {
-    console.log('API error:', error);
-    return {
-      isSuccess: false,
-      result: null,
-      error,
-    };
-  }
-}
+  return { isSuccess, result: data, message };
+};
 
 const API = {
-  get(endpoint) {
-    return request(endpoint, 'GET');
+  get: async (endpoint) => {
+    const response = await fetch(`${BASE_URL}${endpoint}`);
+    return handleResponse(response);
   },
-  post(endpoint, data) {
-    return request(endpoint, 'POST', data);
+
+  post: async (endpoint, body) => {
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    return handleResponse(response);
   },
-  put(endpoint, data) {
-    return request(endpoint, 'PUT', data);
+
+  put: async (endpoint, body) => {
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    return handleResponse(response);
   },
-  delete(endpoint) {
-    return request(endpoint, 'DELETE');
+
+  delete: async (endpoint) => {
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+      method: 'DELETE',
+    });
+    return handleResponse(response);
   },
 };
 

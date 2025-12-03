@@ -47,7 +47,20 @@ const ModuleListScreen = ({ navigation }) => {
   const gotoViewScreen = (module) => {
     navigation.navigate('ModuleView', {
       module,
-      onDelete: async (id) => {
+      onDelete: () => loadModules(),
+      onUpdate: () => loadModules(),
+    });
+  };
+
+  const gotoAddScreen = () => {
+    navigation.navigate('ModuleAdd', {
+      // child screen will call this after successful POST
+      onAdd: () => loadModules(),
+    });
+  };
+
+  //old version not working
+     /* onDelete: async (id) => {
         const response = await API.delete(`/modules/${id}`);
         if (response.isSuccess) {
           await loadModules();
@@ -80,7 +93,7 @@ const ModuleListScreen = ({ navigation }) => {
         }
       },
     });
-  };
+  };*/
 
   // Effects
   useEffect(() => {
