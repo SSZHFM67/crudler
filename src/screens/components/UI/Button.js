@@ -6,6 +6,26 @@ import Selector from './Selector';
 const Button = ({ label, title, children, onPress, style }) => {
   const text = label || title || children;
 
+// buttons white box fixes too close to each other 
+
+const styles = StyleSheet.create({
+    button: {
+        backgroundColor: '#fff',
+        paddingVertical: 12,
+        paddingHorizontal: 24,
+        borderRadius: 10,
+        marginVertical: 8,
+        marginRight: 10,  
+         alignItems: 'center',
+        justifyContent: 'center',
+    },
+    buttonText: {
+        fontSize: 16,
+        fontWeight: '600',
+        color: '#000',
+    },
+});
+
  return (
     <Selector
       onPress={onPress}
