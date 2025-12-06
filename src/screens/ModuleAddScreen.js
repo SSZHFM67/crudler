@@ -10,20 +10,24 @@ import {
 import Screen from './layout/Screen';
 import { Button, ButtonTray } from './components/UI/Button';
 
-const defaultModule = {
-  ModuleID: 106779,
-  ModuleCode: null,
-  ModuleName: null,
-  ModuleLevel: null,
-  ModuleLeader: null,
-  ModuleImage:
-    'https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg',
-};
+const DEFAULT_IMAGE =
+  'https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg';
 
 const ModuleAddScreen = ({ navigation, route }) => {
-  const { onAdd } = route.params;
+  const { onAdd, defaultYearID, defaultLeaderID } = route.params;
 
-  const [module, setModule] = useState(defaultModule);
+  // ModuleYearID, ModuleLeaderID, ModuleImageURL
+  const [module, setModule] = useState(() => ({
+    ModuleID: null,
+    ModuleCode: '',
+    ModuleName: '',
+    ModuleLevel: '',
+    ModuleLeader: '',
+    ModuleImage: DEFAULT_IMAGE,
+    ModuleYearID: defaultYearID ?? 1,
+    ModuleLeaderID: defaultLeaderID ?? 1,
+    ModuleImageURL: DEFAULT_IMAGE,
+  }));
 
   const handleChange = (field, value) => {
     setModule((current) => ({
@@ -33,7 +37,13 @@ const ModuleAddScreen = ({ navigation, route }) => {
   };
 
   const handleAdd = () => {
-    onAdd(module);
+    // send to the API
+    const moduleToSend = {
+      ...module,
+      ModuleImageURL: module.ModuleImage || DEFAULT_IMAGE,
+    };
+
+    onAdd(moduleToSend);
   };
 
   const handleCancel = () => {
@@ -48,7 +58,7 @@ const ModuleAddScreen = ({ navigation, route }) => {
           <Text style={styles.label}>Code</Text>
           <TextInput
             style={styles.input}
-            value={module.ModuleCode ?? ''}
+            value={module.ModuleCode}
             onChangeText={(text) => handleChange('ModuleCode', text)}
             placeholder="e.g. CI6330"
             placeholderTextColor="#777"
@@ -60,7 +70,7 @@ const ModuleAddScreen = ({ navigation, route }) => {
           <Text style={styles.label}>Name</Text>
           <TextInput
             style={styles.input}
-            value={module.ModuleName ?? ''}
+            value={module.ModuleName}
             onChangeText={(text) => handleChange('ModuleName', text)}
             placeholder="Module name"
             placeholderTextColor="#777"
@@ -72,7 +82,7 @@ const ModuleAddScreen = ({ navigation, route }) => {
           <Text style={styles.label}>Level</Text>
           <TextInput
             style={styles.input}
-            value={module.ModuleLevel ?? ''}
+            value={String(module.ModuleLevel)}
             onChangeText={(text) => handleChange('ModuleLevel', text)}
             placeholder="e.g. 5"
             placeholderTextColor="#777"
@@ -80,12 +90,12 @@ const ModuleAddScreen = ({ navigation, route }) => {
           />
         </View>
 
-        {/* Leader */}
+        {/* Leader (display only – API uses ModuleLeaderID) */}
         <View style={styles.formItem}>
           <Text style={styles.label}>Leader</Text>
           <TextInput
             style={styles.input}
-            value={module.ModuleLeader ?? ''}
+            value={module.ModuleLeader}
             onChangeText={(text) => handleChange('ModuleLeader', text)}
             placeholder="Module leader"
             placeholderTextColor="#777"
@@ -97,9 +107,33 @@ const ModuleAddScreen = ({ navigation, route }) => {
           <Text style={styles.label}>Image URL</Text>
           <TextInput
             style={styles.input}
-            value={module.ModuleImage ?? ''}
+            value={module.ModuleImage}
             onChangeText={(text) => handleChange('ModuleImage', text)}
             placeholder="Image URL"
+            placeholderTextColor="#777"
+          />
+        </View>
+
+        <View style={styles.formItem}>
+          <Text style={styles.label}>Year ID (API)</Text>
+          <TextInput
+            style={styles.input}
+            value={String(module.ModuleYearID)}
+            onChangeText={(text) => handleChange('ModuleYearID', text)}
+            keyboardType="numeric"
+            placeholder="e.g. 2627"
+            placeholderTextColor="#777"
+          />
+        </View>
+
+        <View style={styles.formItem}>
+          <Text style={styles.label}>Leader ID (API)</Text>
+          <TextInput
+            style={styles.input}
+            value={String(module.ModuleLeaderID)}
+            onChangeText={(text) => handleChange('ModuleLeaderID', text)}
+            keyboardType="numeric"
+            placeholder="e.g. 1"
             placeholderTextColor="#777"
           />
         </View>

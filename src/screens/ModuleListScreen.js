@@ -50,43 +50,85 @@ const ModuleListScreen = ({ navigation }) => {
   const gotoViewScreen = (module) => {
     navigation.navigate('ModuleView', {
       module,
+      
       onDelete: async (id) => {
         const deleteEndpoint = `${modulesEndpoint}/${id}`;
-         const response = await API.delete(deleteEndpoint);
-        if (response.isSuccess) {
+         const response = await API.delete('/modules/${id}');
+        
+         if (response.isSuccess) {
           await loadModules();
+          navigation.goBack();
         } else {
           console.warn('Delete failed:', response.message);
+          Alert.alert(
+            'Delete failed',
+            response.message || 'something went wrong whilst deleting the module.'
+          );
         }
       },
+
       onUpdate: async (updatedModule) => {
         const response = await API.put(
           `/modules/${updatedModule.ModuleID}`,
           updatedModule
         );
-        if (response.isSuccess) {
+
+         if (response.isSuccess) {
           await loadModules();
+          navigation.navigate('ModuleView', {
+            module: updatedModule,
+            // pass the handlers again so the view still works
+            onDelete: async (id) => {
+              const delResponse = await API.delete(`/modules/${id}`);
+              if (delResponse.isSuccess) {
+                await loadModules();
+                navigation.goBack();
+              } else {
+                Alert.alert(
+                  'Delete failed',
+                  delResponse.message ||
+                    'Something went wrong while deleting the module.'
+                );
+              }
+            },
+            onUpdate: arguments.callee, // reuse same modify behaviour
+          });
         } else {
           console.warn('Update failed:', response.message);
+          Alert.alert(
+            'Modify failed',
+            response.message || 'Something went wrong while modifying the module.'
+          );
         }
       },
     });
   };
+
 
   const gotoAddScreen = () => {
+    const template = modules[0] || {};
+
     navigation.navigate('ModuleAdd', {
+      defaultYearID: template.ModuleYearID ?? 1,
+      defaultLeaderID: template.ModuleLeaderID ?? 1,
+
       onAdd: async (newModule) => {
         const response = await API.post('/modules', newModule);
+
         if (response.isSuccess) {
           await loadModules();
+          navigation.goBack(); // back to list to see the new item
         } else {
           console.warn('Add failed:', response.message);
+          Alert.alert(
+            'Error',
+            response.message || 'Something went wrong while adding the module.'
+          );
         }
       },
     });
   };
 
-  // Effects
   useEffect(() => {
     loadModules();
   }, []);
