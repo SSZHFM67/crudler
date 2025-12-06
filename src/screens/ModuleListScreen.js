@@ -12,6 +12,9 @@ import API from './components/API/API';
 
 import ModuleItem from './components/entity/modules/ModuleItem';
 import { Button, ButtonTray } from './components/UI/Button';
+// API base for modules
+const modulesEndpoint = 'https://softwarehub.uk/unibase/api/modules';
+
 
 //force loading screen 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -47,28 +50,16 @@ const ModuleListScreen = ({ navigation }) => {
   const gotoViewScreen = (module) => {
     navigation.navigate('ModuleView', {
       module,
-      onDelete: () => loadModules(),
-      onUpdate: () => loadModules(),
-    });
-  };
-
-  const gotoAddScreen = () => {
-    navigation.navigate('ModuleAdd', {
-      // child screen will call this after successful POST
-      onAdd: () => loadModules(),
-    });
-  };
-
-  //old version not working
-     /* onDelete: async (id) => {
-        const response = await API.delete(`/modules/${id}`);
+      onDelete: async (id) => {
+        const deleteEndpoint = `${modulesEndpoint}/${id}`;
+         const response = await API.delete(deleteEndpoint);
         if (response.isSuccess) {
           await loadModules();
         } else {
           console.warn('Delete failed:', response.message);
         }
       },
-      onModify: async (updatedModule) => {
+      onUpdate: async (updatedModule) => {
         const response = await API.put(
           `/modules/${updatedModule.ModuleID}`,
           updatedModule
@@ -93,7 +84,7 @@ const ModuleListScreen = ({ navigation }) => {
         }
       },
     });
-  };*/
+  };
 
   // Effects
   useEffect(() => {

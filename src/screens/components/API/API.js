@@ -1,56 +1,76 @@
 // src/screens/components/API/API.js
-//fix JSON eroor not updating the page changes
+
 const BASE_URL = 'https://softwarehub.uk/unibase/api';
 
-const handleResponse = async (response) => {
-  const text = await response.text();
-  let data = null;
+async function request(endpoint, method = 'GET', data = null) {
+  // endpoint should start with '/', e.g. '/modules'
+  const url = `${BASE_URL}${endpoint}`;
 
-  if (text) {
-    try {
-      data = JSON.parse(text);
-    } catch (e) {
-      data = null;
-    }
+  const options = {
+    method,
+    headers: {},
+  };
+
+  if (data !== null) {
+    options.headers['Content-Type'] = 'application/json';
+    options.body = JSON.stringify(data);
   }
 
-  const isSuccess = response.ok;
-  const message =
-    data?.message ||
-    (!isSuccess ? `HTTP ${response.status} ${response.statusText}` : null);
+  try {
+    const response = await fetch(url, options);
 
-  return { isSuccess, result: data, message };
-};
+    // Read body ONCE as text
+    const raw = await response.text();
+
+    // Try to JSON-parse the body, fall back to the raw string
+    let parsed = null;
+    if (raw && raw.length > 0) {
+      try {
+        parsed = JSON.parse(raw);
+      } catch (e) {
+        // Not valid JSON, just use the raw text
+        parsed = raw;
+      }
+    }
+
+    // Try to get a useful message
+    let message;
+    if (parsed && typeof parsed === 'object' && 'message' in parsed) {
+      message = parsed.message;
+    } else if (typeof parsed === 'string') {
+      message = parsed;
+    }
+
+    return {
+      isSuccess: response.ok,
+      result: parsed,
+      status: response.status,
+      message,
+    };
+  } catch (error) {
+    console.log('API error:', error);
+    return {
+      isSuccess: false,
+      result: null,
+      status: 0,
+      message: error.message,
+      error,
+    };
+  }
+}
 
 const API = {
-  get: async (endpoint) => {
-    const response = await fetch(`${BASE_URL}${endpoint}`);
-    return handleResponse(response);
+  get(endpoint) {
+    return request(endpoint, 'GET');
   },
-
-  post: async (endpoint, body) => {
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    });
-    return handleResponse(response);
+  post(endpoint, data) {
+    return request(endpoint, 'POST', data);
   },
-
-  put: async (endpoint, body) => {
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    });
-    return handleResponse(response);
+  put(endpoint, data) {
+    return request(endpoint, 'PUT', data);
   },
-
-  delete: async (endpoint) => {
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: 'DELETE',
-    });
-    return handleResponse(response);
+  delete(endpoint) {
+    return request(endpoint, 'DELETE');
   },
 };
 

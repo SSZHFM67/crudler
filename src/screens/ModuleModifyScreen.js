@@ -1,4 +1,4 @@
-import { StyleSheet, Text } from 'react-native';
+//import { StyleSheet, Text } from 'react-native';
 import React, { useState } from 'react';
 import {
   ScrollView,
@@ -27,17 +27,104 @@ const [editedModule, setEditedModule] = useState(module);
      navigation.navigate('ModuleList');
   };
 
+  const handleCancel = () => {
+    navigation.goBack();
+  };
+
   return (
     <Screen>
-      <Text style={styles.text}>Modify</Text>
+      <ScrollView contentContainerStyle={styles.container}>
+        {/* Code */}
+        <View style={styles.formItem}>
+          <Text style={styles.label}>Code</Text>
+          <TextInput
+            style={styles.input}
+            value={editedModule.ModuleCode ?? ''}
+            onChangeText={(text) => handleChange('ModuleCode', text)}
+            placeholder="e.g. CI6330"
+            placeholderTextColor="#777"
+          />
+        </View>
+
+        {/* Name */}
+        <View style={styles.formItem}>
+          <Text style={styles.label}>Name</Text>
+          <TextInput
+            style={styles.input}
+            value={editedModule.ModuleName ?? ''}
+            onChangeText={(text) => handleChange('ModuleName', text)}
+            placeholder="Module name"
+            placeholderTextColor="#777"
+          />
+        </View>
+
+        {/* Level */}
+        <View style={styles.formItem}>
+          <Text style={styles.label}>Level</Text>
+          <TextInput
+            style={styles.input}
+            value={editedModule.ModuleLevel ?? ''}
+            onChangeText={(text) => handleChange('ModuleLevel', text)}
+            placeholder="e.g. 5"
+            placeholderTextColor="#777"
+            keyboardType="numeric"
+          />
+        </View>
+
+        {/* Leader */}
+        <View style={styles.formItem}>
+          <Text style={styles.label}>Leader</Text>
+          <TextInput
+            style={styles.input}
+            value={editedModule.ModuleLeader ?? ''}
+            onChangeText={(text) => handleChange('ModuleLeader', text)}
+            placeholder="Module leader"
+            placeholderTextColor="#777"
+          />
+        </View>
+
+        {/* Image URL */}
+        <View style={styles.formItem}>
+          <Text style={styles.label}>Image URL</Text>
+          <TextInput
+            style={styles.input}
+            value={editedModule.ModuleImage ?? ''}
+            onChangeText={(text) => handleChange('ModuleImage', text)}
+            placeholder="Image URL"
+            placeholderTextColor="#777"
+          />
+        </View>
+
+        <ButtonTray>
+          <Button label="Save" onPress={handleSave} />
+          <Button label="Cancel" onPress={handleCancel} />
+        </ButtonTray>
+      </ScrollView>
     </Screen>
   );
 };
 
 const styles = StyleSheet.create({
-  text: {
-    color: '#fff',
-    fontSize: 24,
+  container: {
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: 40,
+  },
+  formItem: {
+    marginBottom: 16,
+  },
+  label: {
+    color: '#ffffff',
+    marginBottom: 4,
+  },
+  input: {
+    backgroundColor: '#111111',
+    borderColor: '#333333',
+    borderWidth: 1,
+    borderRadius: 4,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    color: '#ffffff',
   },
 });
 
