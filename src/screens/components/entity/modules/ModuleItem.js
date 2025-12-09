@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   favourite: {
-    marginRight: 8,
+    marginRight: 10,
   },
   pressedItem: {
     backgroundColor: 'azure',

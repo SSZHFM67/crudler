@@ -25,7 +25,7 @@ const ModuleListScreen = ({ navigation }) => {
   // State
   const [modules, setModules] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [favourites, saveFavourites] = useStore(favouritesKey, []);
+  const [favourites, saveFavourites] = useStore('ModuleFavourites', []);
 
 
   // Helpers
@@ -51,12 +51,12 @@ const ModuleListScreen = ({ navigation }) => {
   };
 
    const augmentModulesWithFavourites = () => {
-    const augmentedModules = modules.map((module) => ({
-      ...module,
-      ModuleFavourite: favourites.includes(module.ModuleID),
+    const augmented = modules.map((m) => ({
+      ...m,
+      ModuleFavourite: favourites.includes(m.ModuleID),
     }));
 
-    setModules(augmentedModules);
+    setModules(augmented);
   };
 
   // Run once on mount to load modules
@@ -73,13 +73,9 @@ const ModuleListScreen = ({ navigation }) => {
 
   // Toggle favourite for a single module + persist to AsyncStorage
   const handleFavourite = (module) => {
-    // New value for this module
-    const isFavourite = !module.ModuleFavourite;
-
-    // Update modules list with toggled ModuleFavourite
     const updatedModules = modules.map((item) =>
       item.ModuleID === module.ModuleID
-        ? { ...item, ModuleFavourite: isFavourite }
+        ? { ...item, ModuleFavourite: !item.ModuleFavourite }
         : item
     );
 
@@ -195,6 +191,7 @@ const ModuleListScreen = ({ navigation }) => {
             key={module.ModuleID}
             module={module}
             onSelect={gotoViewScreen}
+            onFavourite={handleFavourite}
           />
         ))}
       </ScrollView>
