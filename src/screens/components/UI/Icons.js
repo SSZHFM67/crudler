@@ -4,6 +4,8 @@ const Icons = {
   Delete: () => '🗑️',
   Cancel: () => '✖️',
   Submit: () => '✅',
+  Favourite: () => '❤️',
+  NotFavourite: () => '🤍',
 };
 
 export default Icons;
