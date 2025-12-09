@@ -1,17 +1,18 @@
+// src/screens/components/UI/Favourite.js
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import Selector from './Selector';
 import Icons from './Icons';
 
 const Favourite = ({ isFavourite, onPress, style }) => {
-    const icon = isFavourite ? Icons.Favourite() : Icons.NotFavourite();
+  const icon = isFavourite ? Icons.Favourite() : Icons.NotFavourite();
 
   return (
     <Selector
       onPress={onPress}
       style={[styles.container, style]}
       pressedStyle={styles.pressed}
-      // tap only 
+      // tap only
       useLongPress={false}
     >
       <Text style={styles.icon}>{icon}</Text>

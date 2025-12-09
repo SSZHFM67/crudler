@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import Selector from '../../UI/Selector';
 import Favourite from '../../UI/Favourite';
 
-const ModuleItem = ({ module, onSelect  }) => {
+const ModuleItem = ({ module, onSelect, onFavourite  }) => {
   const handleSelect = () => {
   if (onSelect) {
     onSelect(module);
