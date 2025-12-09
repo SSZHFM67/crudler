@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   View,
+  alert,
 } from 'react-native';
 
 import Screen from './layout/Screen';
@@ -12,9 +13,10 @@ import API from './components/API/API';
 
 import ModuleItem from './components/entity/modules/ModuleItem';
 import { Button, ButtonTray } from './components/UI/Button';
+import useStore from './components/store/useStore';
 // API base for modules
 const modulesEndpoint = 'https://softwarehub.uk/unibase/api/modules';
-
+const favouritesKey = 'ModuleFavourites';
 
 //force loading screen 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -23,6 +25,8 @@ const ModuleListScreen = ({ navigation }) => {
   // State
   const [modules, setModules] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [favourites, saveFavourites] = useStore(favouritesKey, []);
+
 
   // Helpers
   const loadModules = async () => {
@@ -44,6 +48,49 @@ const ModuleListScreen = ({ navigation }) => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+   const augmentModulesWithFavourites = () => {
+    const augmentedModules = modules.map((module) => ({
+      ...module,
+      ModuleFavourite: favourites.includes(module.ModuleID),
+    }));
+
+    setModules(augmentedModules);
+  };
+
+  // Run once on mount to load modules
+  useEffect(() => {
+    loadModules();
+  }, []);
+
+  // Re-augment modules whenever loading finishes or favourites change
+  useEffect(() => {
+    if (!isLoading) {
+      augmentModulesWithFavourites();
+    }
+  }, [isLoading, favourites]);
+
+  // Toggle favourite for a single module + persist to AsyncStorage
+  const handleFavourite = (module) => {
+    // New value for this module
+    const isFavourite = !module.ModuleFavourite;
+
+    // Update modules list with toggled ModuleFavourite
+    const updatedModules = modules.map((item) =>
+      item.ModuleID === module.ModuleID
+        ? { ...item, ModuleFavourite: isFavourite }
+        : item
+    );
+
+    setModules(updatedModules);
+
+    // Derive updated favourites list (just the IDs) and persist it
+    const updatedFavouritesList = updatedModules
+      .filter((item) => item.ModuleFavourite)
+      .map((item) => item.ModuleID);
+
+    saveFavourites(updatedFavouritesList);
   };
 
   // Navigation helpers

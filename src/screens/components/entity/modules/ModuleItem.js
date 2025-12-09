@@ -4,28 +4,30 @@ import Selector from '../../UI/Selector';
 import Favourite from '../../UI/Favourite';
 
 const ModuleItem = ({ module, onSelect  }) => {
-  const handlePress = () => {
-  onSelect(module);
+  const handleSelect = () => {
+  if (onSelect) {
+    onSelect(module);
+  }
   };
 
-  const handleFavouritePress = () => {
-    console.log('Favourite pressed for', module.ModuleCode);
+  const handleFavourite = () => {
+    if (onFavourite) {
+      onFavourite(module);
+    }
   };
-
-  const isFavourite = !!module.ModuleFavourite; 
 
   return (
     <Selector
-      onPress={handlePress}
+      onPress={handleSelect}
       style={styles.item}
       pressedStyle={styles.pressedItem}
       //long press to avoid accidents
       useLongPress={false}
     >
-      <View style={styles.row}>
+       <View style={styles.row}>
         <Favourite
-        isFavourite={isFavourite}
-          onPress={handleFavouritePress}
+          isFavourite={!!module.ModuleFavourite}
+          onPress={handleFavourite}
           style={styles.favourite}
         />
 
