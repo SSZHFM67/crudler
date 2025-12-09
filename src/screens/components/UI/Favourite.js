@@ -18,3 +18,17 @@ const Favourite = ({ isFavourite, onPress, style }) => {
     </Selector>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    paddingRight: 8,
+  },
+  pressed: {
+    opacity: 0.7,
+  },
+  icon: {
+    fontSize: 18,
+  },
+});
+
+export default Favourite;
