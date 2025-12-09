@@ -1,33 +1,43 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Selector from '../../UI/Selector';
+import Favourite from '../../UI/Favourite';
 
 const ModuleItem = ({ module, onSelect  }) => {
-  //const handlePress = () => {
-    //onSelect(module);
-  //};
+  const handlePress = () => {
+  onSelect(module);
+  };
+
+  const handleFavouritePress = () => {
+    console.log('Favourite pressed for', module.ModuleCode);
+  };
+
+  const isFavourite = !!module.ModuleFavourite; 
 
   return (
     <Selector
-      onPress={() => onSelect(module)}
+      onPress={handlePress}
       style={styles.item}
       pressedStyle={styles.pressedItem}
       //long press to avoid accidents
       useLongPress={false}
     >
-      <View>
-        <Text style={styles.code}>{module.ModuleCode}</Text>
-        <Text style={styles.name}>{module.ModuleName}</Text>
+      <View style={styles.row}>
+        <Favourite
+        isFavourite={isFavourite}
+          onPress={handleFavouritePress}
+          style={styles.favourite}
+        />
+
+         <View>
+          <Text style={styles.code}>{module.ModuleCode}</Text>
+          <Text style={styles.name}>{module.ModuleName}</Text>
+        </View>
       </View>
     </Selector>
-
-    /*<Pressable style={styles.item} onPress={handlePress}>
-      <Text style={styles.code}>{module.ModuleCode}</Text>
-      <Text style={styles.name}>{module.ModuleName}</Text>
-    </Pressable>*/
   );
 };
-
+  
 const styles = StyleSheet.create({
   item: {
     paddingVertical: 12,
@@ -35,6 +45,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#333',
    },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  favourite: {
+    marginRight: 8,
+  },
   pressedItem: {
     backgroundColor: 'azure',
   },
